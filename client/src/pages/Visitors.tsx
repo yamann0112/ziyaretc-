@@ -139,7 +139,7 @@ export default function Visitors() {
         </div>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
             <SuggestionInput 
               label="Ad" 
               placeholder="Ahmet"
@@ -175,8 +175,10 @@ export default function Visitors() {
               onSelectVisitor={fillFormFromVisitor}
               value={form.watch("plate")}
             />
+          </div>
 
-            <div className="lg:col-span-3 space-y-2">
+          <div className="space-y-6">
+            <div className="space-y-2">
               <label className="text-sm font-medium text-muted-foreground ml-1">Açıklama</label>
               <div className="relative">
                 <FileText className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground" />
@@ -188,16 +190,14 @@ export default function Visitors() {
               </div>
             </div>
 
-            <div className="flex items-end">
-              <button
-                type="submit"
-                disabled={createMutation.isPending || updateMutation.isPending}
-                className="w-full py-3 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-all font-bold shadow-lg shadow-primary/20 flex items-center justify-center gap-2 active:scale-95"
-              >
-                <Save size={20} />
-                {(createMutation.isPending || updateMutation.isPending) ? "Kaydediliyor..." : "KAYDET"}
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={createMutation.isPending || updateMutation.isPending}
+              className="w-full py-3 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-all font-bold shadow-lg shadow-primary/20 flex items-center justify-center gap-2 active:scale-[0.98]"
+            >
+              <Save size={20} />
+              {(createMutation.isPending || updateMutation.isPending) ? "Kaydediliyor..." : "KAYDET"}
+            </button>
           </div>
         </form>
       </div>
