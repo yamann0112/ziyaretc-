@@ -7,13 +7,19 @@ import type { Visitor } from "@shared/schema";
 interface SuggestionInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   onSelectVisitor: (visitor: Visitor) => void;
+  icon?: React.ReactNode;
 }
 
-export function SuggestionInput({ label, onSelectVisitor, className, ...props }: SuggestionInputProps) {
-  const [searchTerm, setSearchTerm] = useState("");
+export function SuggestionInput({ label, onSelectVisitor, className, icon, value, ...props }: SuggestionInputProps) {
+  const [searchTerm, setSearchTerm] = useState((value as string) || "");
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   
+  // Update internal search term if value prop changes
+  useEffect(() => {
+    setSearchTerm((value as string) || "");
+  }, [value]);
+
   // Only search when there's input
   const { data: suggestions } = useVisitors(searchTerm.length > 1 ? searchTerm : undefined);
 
@@ -36,7 +42,7 @@ export function SuggestionInput({ label, onSelectVisitor, className, ...props }:
 
   const handleSelect = (visitor: Visitor) => {
     onSelectVisitor(visitor);
-    setSearchTerm(visitor.name); // Just to show something, parent controls actual value
+    setSearchTerm(visitor.name); 
     setIsOpen(false);
   };
 
@@ -46,11 +52,18 @@ export function SuggestionInput({ label, onSelectVisitor, className, ...props }:
         {label}
       </label>
       <div className="relative">
+        {icon && (
+          <div className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground">
+            {icon}
+          </div>
+        )}
         <input
           {...props}
+          value={searchTerm}
           onChange={handleInputChange}
           className={cn(
             "w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all duration-200",
+            icon && "pl-10",
             className
           )}
           autoComplete="off"
